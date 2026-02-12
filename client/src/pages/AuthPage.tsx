@@ -6,9 +6,13 @@ import { toast } from 'react-hot-toast'
 import { api } from '../framework/api'
 import { AuthPanel } from '../framework/components/AuthPanel'
 import { Header } from '../framework/components/Header'
-import type { ViewMode } from '../framework/types'
+import type { ViewMode, Student } from '../framework/types'
 
-export function AuthPage() {
+interface AuthPageProps {
+  onLoginSuccess?: (student: Student) => void
+}
+
+export function AuthPage({ onLoginSuccess }: AuthPageProps) {
   const navigate = useNavigate()
   const [mode, setMode] = useState<ViewMode>('register')
   const [registerForm, setRegisterForm] = useState({
@@ -81,11 +85,17 @@ export function AuthPage() {
       toast.success(`Вітаю, ${payload.student.name}!`)
       setLoginForm({ identifier: '', password: '' })
       localStorage.setItem('student', JSON.stringify(payload.student))
+      
+      // Call callback to update App state
+      if (onLoginSuccess) {
+        onLoginSuccess(payload.student)
+      }
+      
+      // Navigate to modules
       navigate('/modules')
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Помилка входу.'
       toast.error(errorMessage)
-    } finally {
       setLoading(false)
     }
   }

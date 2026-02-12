@@ -25,6 +25,26 @@ function AppRoutes() {
     setLoading(false)
   }, [])
 
+  // Listen to storage changes from other tabs/windows
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const savedStudent = localStorage.getItem('student')
+      if (savedStudent) {
+        try {
+          setStudent(JSON.parse(savedStudent))
+        } catch (err) {
+          console.error('Failed to restore student:', err)
+          setStudent(null)
+        }
+      } else {
+        setStudent(null)
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [])
+
   const handleStudentUpdate = (updatedStudent: Student) => {
     setStudent(updatedStudent)
     localStorage.setItem('student', JSON.stringify(updatedStudent))
@@ -45,7 +65,7 @@ function AppRoutes() {
         <Route
           path="/auth"
           element={
-            student ? <Navigate to="/modules" replace /> : <AuthPage />
+            student ? <Navigate to="/modules" replace /> : <AuthPage onLoginSuccess={setStudent} />
           }
         />
         <Route
