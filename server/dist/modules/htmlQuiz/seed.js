@@ -1,9 +1,8 @@
 import { GameModel } from "../../framework/models.js";
 import { HTML_QUIZ_ID, HTML_QUIZ_NAME, HTML_QUIZ_QUESTIONS } from "./htmlQuizData.js";
 export const seedHtmlQuizGame = async () => {
-    const existing = await GameModel.findOne({ id: HTML_QUIZ_ID });
-    if (existing)
-        return;
+    // Always recreate the game to ensure levels are correct
+    await GameModel.deleteOne({ id: HTML_QUIZ_ID });
     await GameModel.create({
         id: HTML_QUIZ_ID,
         name: HTML_QUIZ_NAME,
