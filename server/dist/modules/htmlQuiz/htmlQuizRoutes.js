@@ -32,6 +32,13 @@ htmlQuizRouter.post("/api/modules/html-basics/start", async (req, res) => {
                 : null,
             totalLevels: result.game.levels.length,
             levels: result.allLevels,
+            student: {
+                id: result.student._id.toString(),
+                name: result.student.name,
+                nickname: result.student.nickname,
+                classLevel: result.student.classLevel,
+                points: result.student.points,
+            },
             messages: {
                 wrongAnswer: "неправильна відповідь",
                 levelCompleted: "Рівень завершено!",

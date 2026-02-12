@@ -91,4 +91,16 @@ export const api = {
       messages?: GameMessages
     }>(response)
   },
-}
+  getLeaderboard: async (classLevel: number) => {
+    const response = await fetch(`${API_URL}/api/leaderboard/${classLevel}`)
+    return parseResponse<{
+      leaderboard: Array<{
+        rank: number
+        id: string
+        name: string
+        nickname: string
+        classLevel: number
+        points: number
+      }>
+    }>(response)
+  },}

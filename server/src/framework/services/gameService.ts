@@ -42,7 +42,7 @@ export const startGame = async (params: {
 
   const currentLevel = game.levels[progress.currentLevelIndex] ?? null;
 
-  return { game, progress, currentLevel, allLevels: game.levels } as const;
+  return { game, progress, currentLevel, allLevels: game.levels, student } as const;
 };
 
 export const completeLevel = async (params: {

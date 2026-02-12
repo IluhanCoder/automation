@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast'
 import { AuthPage } from './pages/AuthPage'
 import { ModulesPage } from './pages/ModulesPage'
 import { GamePage } from './pages/GamePage'
+import { LeaderboardPage } from './pages/LeaderboardPage'
 import type { Student } from './framework/types'
 
 function AppRoutes() {
@@ -88,6 +89,19 @@ function AppRoutes() {
               <GamePage
                 student={student}
                 onStudentUpdate={handleStudentUpdate}
+              />
+            ) : (
+              <Navigate to="/auth" replace />
+            )
+          }
+        />
+        <Route
+          path="/leaderboard"
+          element={
+            student ? (
+              <LeaderboardPage
+                student={student}
+                onLogout={() => setStudent(null)}
               />
             ) : (
               <Navigate to="/auth" replace />

@@ -87,3 +87,31 @@ authRouter.post("/api/login", async (req, res) => {
     return handleError(res, error);
   }
 });
+authRouter.get("/api/leaderboard/:classLevel", async (req, res) => {
+  try {
+    const classLevel = Number(req.params.classLevel);
+
+    if (!Number.isInteger(classLevel) || classLevel < 1 || classLevel > 8) {
+      return res
+        .status(400)
+        .json({ message: "Class must be a number between 1 and 8." });
+    }
+
+    const students = await StudentModel.find({ classLevel })
+      .sort({ points: -1 })
+      .select("name nickname classLevel points");
+
+    const leaderboard = students.map((student, index) => ({
+      rank: index + 1,
+      id: student._id.toString(),
+      name: student.name,
+      nickname: student.nickname,
+      classLevel: student.classLevel,
+      points: student.points,
+    }));
+
+    return res.json({ leaderboard });
+  } catch (error) {
+    return handleError(res, error);
+  }
+});

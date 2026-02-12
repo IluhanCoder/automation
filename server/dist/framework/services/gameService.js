@@ -23,7 +23,7 @@ export const startGame = async (params) => {
         await game.save();
     }
     const currentLevel = game.levels[progress.currentLevelIndex] ?? null;
-    return { game, progress, currentLevel, allLevels: game.levels };
+    return { game, progress, currentLevel, allLevels: game.levels, student };
 };
 export const completeLevel = async (params) => {
     const game = await GameModel.findOne({ id: params.gameId });
