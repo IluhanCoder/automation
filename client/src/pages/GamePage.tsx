@@ -25,20 +25,9 @@ export function GamePage({ student, onStudentUpdate }: GamePageProps) {
     return null
   }
 
-  // Load saved game state or start module on mount
+  // Load game state from API on mount
   useEffect(() => {
-    const savedModuleState = localStorage.getItem('moduleState')
-
-    if (savedModuleState) {
-      try {
-        setModuleState(JSON.parse(savedModuleState))
-      } catch (err) {
-        console.error('Failed to restore moduleState:', err)
-        startModule()
-      }
-    } else {
-      startModule()
-    }
+    startModule()
   }, [moduleId])
 
   const startModule = async () => {
@@ -58,7 +47,6 @@ export function GamePage({ student, onStudentUpdate }: GamePageProps) {
       if (payload.student) {
         onStudentUpdate(payload.student)
       }
-      localStorage.setItem('moduleState', JSON.stringify(payload))
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Не вдалося запустити модуль.'
       toast.error(errorMessage)
@@ -136,14 +124,6 @@ export function GamePage({ student, onStudentUpdate }: GamePageProps) {
       } else {
         toast.success(payload.message)
       }
-
-      // Update localStorage
-      localStorage.setItem('moduleState', JSON.stringify({
-        ...moduleState,
-        progress: payload.progress,
-        question: payload.question || moduleState.question,
-        totalLevels: payload.totalLevels,
-      }))
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : messages?.wrongAnswer || 'Відповідь не зарахована.'
       toast.error(errorMessage)
@@ -153,8 +133,6 @@ export function GamePage({ student, onStudentUpdate }: GamePageProps) {
   }
 
   const handleBackToModules = () => {
-    localStorage.removeItem('activeModule')
-    localStorage.removeItem('moduleState')
     navigate('/modules')
   }
 

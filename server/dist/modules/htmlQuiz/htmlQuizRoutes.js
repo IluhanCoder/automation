@@ -2,7 +2,7 @@ import { Router } from "express";
 import { handleError } from "../../framework/utils.js";
 import { completeLevel, startGame } from "../../framework/services/gameService.js";
 import { GameModel } from "../../framework/models.js";
-import { HTML_QUIZ_ID, HTML_QUIZ_NAME, getHtmlQuestion } from "./htmlQuizData.js";
+import { HTML_QUIZ_ID, HTML_QUIZ_NAME, getHtmlQuestion, HTML_QUIZ_QUESTIONS } from "./htmlQuizData.js";
 export const htmlQuizRouter = Router();
 htmlQuizRouter.post("/api/modules/html-basics/start", async (req, res) => {
     try {
@@ -30,7 +30,7 @@ htmlQuizRouter.post("/api/modules/html-basics/start", async (req, res) => {
                     options: question.options,
                 }
                 : null,
-            totalLevels: result.game.levels.length,
+            totalLevels: HTML_QUIZ_QUESTIONS.length,
             levels: result.allLevels,
             student: {
                 id: result.student._id.toString(),
@@ -83,12 +83,11 @@ htmlQuizRouter.post("/api/modules/html-basics/answer", async (req, res) => {
         const nextQuestionData = result.nextLevel
             ? getHtmlQuestion(result.nextLevel.id)
             : null;
-        const game = await GameModel.findOne({ id: HTML_QUIZ_ID });
-        const totalLevels = game?.levels.length ?? 0;
         return res.json({
             message: result.message,
             isRetry: result.isRetry,
             progress: result.progress,
+            totalLevels: HTML_QUIZ_QUESTIONS.length,
             student: {
                 id: result.student._id.toString(),
                 name: result.student.name,
@@ -103,7 +102,6 @@ htmlQuizRouter.post("/api/modules/html-basics/answer", async (req, res) => {
                     options: nextQuestionData.options,
                 }
                 : null,
-            totalLevels,
             messages,
         });
     }
@@ -130,7 +128,6 @@ htmlQuizRouter.post("/api/modules/html-basics/view-level", async (req, res) => {
             return res.status(400).json({ message: "Game not started." });
         }
         const isCompleted = progress.completedLevelIds.includes(String(levelId));
-        const totalLevels = game.levels.length;
         return res.json({
             module: { id: HTML_QUIZ_ID, name: HTML_QUIZ_NAME },
             progress,
@@ -140,7 +137,7 @@ htmlQuizRouter.post("/api/modules/html-basics/view-level", async (req, res) => {
                 options: question.options,
             },
             isCompleted,
-            totalLevels,
+            totalLevels: HTML_QUIZ_QUESTIONS.length,
             messages: {
                 wrongAnswer: "неправильна відповідь",
                 levelCompleted: "Рівень завершено!",

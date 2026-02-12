@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-hot-toast'
 
 import { useModules } from '../framework/hooks/useModules'
 import { ModuleList } from '../framework/components/ModuleList'

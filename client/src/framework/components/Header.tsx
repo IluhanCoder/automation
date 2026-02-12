@@ -11,8 +11,6 @@ export function Header({ student, onLogout }: HeaderProps) {
 
   const handleLogout = () => {
     localStorage.removeItem('student')
-    localStorage.removeItem('activeModule')
-    localStorage.removeItem('moduleState')
     onLogout()
     navigate('/auth')
   }
