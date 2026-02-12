@@ -39,6 +39,7 @@ export function GamePage({ student, onStudentUpdate }: GamePageProps) {
       setModuleState({
         ...payload,
         levels: payload.levels,
+        question: payload.question, // Ensure question is included
       })
       if (payload.messages) {
         setMessages(payload.messages)
