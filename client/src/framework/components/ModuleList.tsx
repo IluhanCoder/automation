@@ -3,11 +3,10 @@ import type { ModuleSummary } from '../types'
 type ModuleListProps = {
   modules: ModuleSummary[]
   loading: boolean
-  error: string
   onSelect: (module: ModuleSummary) => void
 }
 
-export const ModuleList = ({ modules, loading, error, onSelect }: ModuleListProps) => {
+export const ModuleList = ({ modules, loading, onSelect }: ModuleListProps) => {
   return (
     <div className="space-y-4">
       <div>
@@ -18,12 +17,6 @@ export const ModuleList = ({ modules, loading, error, onSelect }: ModuleListProp
           Обери гру, щоб почати
         </h2>
       </div>
-
-      {error ? (
-        <div className="rounded-2xl border border-rose-500/40 bg-rose-500/10 p-3 text-sm text-rose-700">
-          {error}
-        </div>
-      ) : null}
 
       {loading ? (
         <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-500">

@@ -42,7 +42,7 @@ export const startGame = async (params: {
 
   const currentLevel = game.levels[progress.currentLevelIndex] ?? null;
 
-  return { game, progress, currentLevel } as const;
+  return { game, progress, currentLevel, allLevels: game.levels } as const;
 };
 
 export const completeLevel = async (params: {
@@ -72,30 +72,44 @@ export const completeLevel = async (params: {
     return { error: "Level not completed successfully." } as const;
   }
 
+  const level = game.levels.find((l) => l.id === String(params.levelId));
+  if (!level) {
+    return { error: "Level not found." } as const;
+  }
+
+  // Check if this is a new level (must be in order) or a retry of completed level
+  const isNewLevel = progress.completedLevelIds.includes(level.id) === false;
   const currentLevel = game.levels[progress.currentLevelIndex];
-  if (!currentLevel || currentLevel.id !== String(params.levelId)) {
-    return { error: "You must complete levels in order." } as const;
-  }
 
-  if (progress.completedLevelIds.includes(currentLevel.id)) {
-    return { error: "Level already completed." } as const;
+  if (isNewLevel) {
+    // New level - must complete levels in order
+    if (!currentLevel || currentLevel.id !== String(params.levelId)) {
+      return { error: "You must complete levels in order." } as const;
+    }
+    // Award points for new level
+    progress.completedLevelIds.push(level.id);
+    progress.pointsEarned += level.points;
+    progress.currentLevelIndex += 1;
+    student.points += level.points;
   }
+  // If retry - just continue without awarding points
 
-  progress.completedLevelIds.push(currentLevel.id);
-  progress.pointsEarned += currentLevel.points;
-  progress.currentLevelIndex += 1;
   progress.updatedAt = new Date();
-  student.points += currentLevel.points;
-
   await Promise.all([student.save(), game.save()]);
 
   const nextLevel = game.levels[progress.currentLevelIndex] ?? null;
+  const messageKey = isNewLevel
+    ? nextLevel
+      ? "Level completed."
+      : "Game completed."
+    : "Level completed. (No points for retry)";
 
   return {
-    message: nextLevel ? "Level completed." : "Game completed.",
+    message: messageKey,
     progress,
     student,
     nextLevel,
+    isRetry: !isNewLevel,
   } as const;
 };
 

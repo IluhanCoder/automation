@@ -22,6 +22,13 @@ export type ModuleQuestion = {
   options: string[]
 }
 
+export type GameMessages = {
+  wrongAnswer: string
+  levelCompleted: string
+  gameCompleted: string
+  retryMessage: string
+}
+
 export type ModuleState = {
   module: { id: string; name: string }
   progress: {
@@ -31,4 +38,6 @@ export type ModuleState = {
   }
   question: ModuleQuestion | null
   totalLevels: number
+  levels?: Array<{ id: string; points: number }>
+  messages?: GameMessages
 }

@@ -1,4 +1,4 @@
-import type { ModuleState, ModuleSummary, Student } from './types'
+import type { ModuleState, ModuleSummary, Student, GameMessages } from './types'
 
 const API_URL = 'http://localhost:4000'
 
@@ -42,7 +42,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ studentId }),
     })
-    return parseResponse<ModuleState>(response)
+    return parseResponse<ModuleState & { student: Student }>(response)
   },
   answerModule: async (params: {
     moduleId: string
@@ -61,10 +61,34 @@ export const api = {
     })
     return parseResponse<{
       message: string
+      isRetry: boolean
       progress: ModuleState['progress']
       question: ModuleState['question']
       student: Student
       totalLevels: number
+      messages?: GameMessages
+    }>(response)
+  },
+  viewLevel: async (params: {
+    moduleId: string
+    studentId: string
+    levelId: string
+  }) => {
+    const response = await fetch(`${API_URL}/api/modules/${params.moduleId}/view-level`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        studentId: params.studentId,
+        levelId: params.levelId,
+      }),
+    })
+    return parseResponse<{
+      module: { id: string; name: string }
+      progress: ModuleState['progress']
+      question: ModuleState['question']
+      isCompleted: boolean
+      totalLevels: number
+      messages?: GameMessages
     }>(response)
   },
 }

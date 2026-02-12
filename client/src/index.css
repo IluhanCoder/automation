@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
 body {
-  @apply min-h-screen bg-slate-100 text-slate-900;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  @apply bg-slate-100 text-slate-900;
 }

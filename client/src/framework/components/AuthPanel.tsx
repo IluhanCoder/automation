@@ -15,8 +15,6 @@ type AuthPanelProps = {
   isRegisterValid: boolean
   isLoginValid: boolean
   loading: boolean
-  message: string
-  error: string
   onRegister: (event: FormEvent) => void
   onLogin: (event: FormEvent) => void
   onChangeRegister: (field: keyof AuthPanelProps['registerForm'], value: string) => void
@@ -30,8 +28,6 @@ export const AuthPanel = ({
   isRegisterValid,
   isLoginValid,
   loading,
-  message,
-  error,
   onRegister,
   onLogin,
   onChangeRegister,
@@ -39,17 +35,6 @@ export const AuthPanel = ({
 }: AuthPanelProps) => {
   return (
     <>
-      {message ? (
-        <div className="mt-6 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-4 text-emerald-700">
-          {message}
-        </div>
-      ) : null}
-      {error ? (
-        <div className="mt-6 rounded-2xl border border-rose-500/40 bg-rose-500/10 p-4 text-rose-700">
-          {error}
-        </div>
-      ) : null}
-
       {mode === 'register' ? (
         <form className="mt-8 space-y-4" onSubmit={onRegister}>
           <div className="grid gap-4 md:grid-cols-2">

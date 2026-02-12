@@ -6,7 +6,6 @@ type GameSelectionPageProps = {
   student: Student
   modules: ModuleSummary[]
   loading: boolean
-  error: string
   onSelectModule: (module: ModuleSummary) => void
   onLogout: () => void
 }
@@ -15,7 +14,6 @@ export const GameSelectionPage = ({
   student,
   modules,
   loading,
-  error,
   onSelectModule,
   onLogout,
 }: GameSelectionPageProps) => {
@@ -27,7 +25,6 @@ export const GameSelectionPage = ({
         <ModuleList
           modules={modules}
           loading={loading}
-          error={error}
           onSelect={onSelectModule}
         />
       </div>
