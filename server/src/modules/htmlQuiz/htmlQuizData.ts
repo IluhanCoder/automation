@@ -101,6 +101,91 @@ export const HTML_QUIZ_QUESTIONS: HtmlQuizQuestion[] = [
     ],
     correctIndex: 1,
   },
+  {
+    levelId: "level-13",
+    question: "HTML - це мова...",
+    options: ["програмування", "верстки", "британців", "математики"],
+    correctIndex: 1,
+  },
+  {
+    levelId: "level-14",
+    question: "CSS - це мова...",
+    options: ["верстки", "програмування", "стилів", "розмітки"],
+    correctIndex: 2,
+  },
+  {
+    levelId: "level-15",
+    question: "Що таке верстка?",
+    options: [
+      "Написання коду на Java",
+      "Розташування елементів на веб-сторінці",
+      "Кольорова схема сайту",
+      "Редагування фотографій",
+    ],
+    correctIndex: 1,
+  },
+  {
+    levelId: "level-16",
+    question: "Для чого використовується HTML?",
+    options: [
+      "Для створення красивого дизайну",
+      "Для структури і змісту веб-сторінки",
+      "Для швидкості інтернету",
+      "Для переводу мов",
+    ],
+    correctIndex: 1,
+  },
+  {
+    levelId: "level-17",
+    question: "Для чого використовується CSS?",
+    options: [
+      "Для структури веб-сторінки",
+      "Для логіки і функціональності",
+      "Для стилізації і дизайну",
+      "Для збереження даних",
+    ],
+    correctIndex: 2,
+  },
+  {
+    levelId: "level-18",
+    question: "Який атрибут використовується у посиланні для адреси?",
+    options: ["src", "link", "href", "url"],
+    correctIndex: 2,
+  },
+  {
+    levelId: "level-19",
+    question: "Який атрибут використовується у картинці для шляху?",
+    options: ["href", "link", "src", "path"],
+    correctIndex: 2,
+  },
+  {
+    levelId: "level-20",
+    question: "Яка правильна структура HTML документу?",
+    options: [
+      "<html><body><head></head></body></html>",
+      "<html><head></head><body></body></html>",
+      "<body><head><html></html></head></body>",
+      "<head><body><html></html></body></head>",
+    ],
+    correctIndex: 1,
+  },
+  {
+    levelId: "level-21",
+    question: "Що означає 'атрибут' у HTML?",
+    options: [
+      "Колір елемента",
+      "Додаткова інформація до тегу",
+      "Вид стилю",
+      "Тип браузера",
+    ],
+    correctIndex: 1,
+  },
+  {
+    levelId: "level-22",
+    question: "Який з цих тегів не є заголовком?",
+    options: ["<h1>", "<h5>", "<head>", "<h3>"],
+    correctIndex: 2,
+  },
 ];
 
 export const getHtmlQuestion = (levelId: string) =>
