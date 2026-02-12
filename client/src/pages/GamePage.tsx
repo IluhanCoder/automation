@@ -158,7 +158,7 @@ export function GamePage({ student, onStudentUpdate }: GamePageProps) {
 
   return (
     <div className="flex h-screen w-screen flex-col items-stretch">
-      <Header student={student} onLogout={() => {}} />
+      <Header student={student} onLogout={() => navigate('/auth')} />
       <div className="flex-1 overflow-auto rounded-none border-none bg-white p-0 shadow-none flex flex-col">
         <div className="flex-1 overflow-auto p-6">
           <ModuleFrame
