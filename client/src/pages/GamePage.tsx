@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 
@@ -15,6 +15,7 @@ interface GamePageProps {
 export function GamePage({ student, onStudentUpdate }: GamePageProps) {
   const navigate = useNavigate()
   const { moduleId } = useParams()
+  const hasInitialized = useRef(false)
   const [moduleState, setModuleState] = useState<ModuleState | null>(null)
   const [moduleLoading, setModuleLoading] = useState(false)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
@@ -25,9 +26,12 @@ export function GamePage({ student, onStudentUpdate }: GamePageProps) {
     return null
   }
 
-  // Load game state from API on mount
+  // Load game state from API on mount (only once)
   useEffect(() => {
-    startModule()
+    if (!hasInitialized.current) {
+      hasInitialized.current = true
+      startModule()
+    }
   }, [moduleId])
 
   const startModule = async () => {
