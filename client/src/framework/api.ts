@@ -103,4 +103,32 @@ export const api = {
         points: number
       }>
     }>(response)
-  },}
+  },
+  submitHtmlBuilder: async (params: {
+    moduleId: string
+    studentId: string
+    levelId: string
+    html: string
+  }) => {
+    const response = await fetch(`${API_URL}/api/modules/${params.moduleId}/answer`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        studentId: params.studentId,
+        levelId: params.levelId,
+        html: params.html,
+      }),
+    })
+    return parseResponse<{
+      message: string
+      isRetry: boolean
+      isCorrect: boolean
+      feedback: string
+      progress: ModuleState['progress']
+      question: ModuleState['question']
+      student: Student
+      totalLevels: number
+      messages?: GameMessages
+    }>(response)
+  },
+}

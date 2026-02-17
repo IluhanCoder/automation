@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .palette, .constructor {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            min-width: 250px;
+            min-height: 400px;
+            background: #f9f9f9;
+        }
+
+        .palette h2, .constructor h2 {
+            margin-top: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .palette-item {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            cursor: grab;
+            border-radius: 4px;
+        }
+
+        .palette-item:hover {
+            background: #f0f0f0;
+        }
+
+        .palette-item.dragging {
+            opacity: 0.5;
+        }
+
+        .block {
+            background: white;
+            border: 1px solid #333;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .block-drop-hint {
+            background: #ffe5e5;
+            border: 2px dashed #ff6b6b;
+            padding: 10px;
+            margin: 5px 0;
+            text-align: center;
+            font-size: 12px;
+            color: #ff6b6b;
+        }
+
+        .block-drop-hint.drag-over {
+            background: #ff9999;
+            border-color: #cc0000;
+        }
+
+        .console-output {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 400px;
+            height: 200px;
+            background: #222;
+            color: #0f0;
+            border: 1px solid #0f0;
+            overflow-y: auto;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 11px;
+            max-height: 50vh;
+        }
+
+        .console-line {
+            margin: 2px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="palette" id="palette">
+        <h2>Palette</h2>
+        <div class="palette-item" draggable="true" data-block='{"tag":"html"}'>
+            &lt;html&gt;
+        </div>
+        <div class="palette-item" draggable="true" data-block='{"tag":"head"}'>
+            &lt;head&gt;
+        </div>
+        <div class="palette-item" draggable="true" data-block='{"tag":"body"}'>
+            &lt;body&gt;
+        </div>
+        <div class="palette-item" draggable="true" data-block='{"tag":"div"}'>
+            &lt;div&gt;
+        </div>
+    </div>
+
+    <div class="constructor" id="constructor">
+        <h2>Constructor</h2>
+        <p style="color: #999; margin: 20px 0;">Drop items here, then drag them into blocks</p>
+    </div>
+
+    <div class="console-output" id="console"></div>
+
+    <script>
+        let draggedBlockData = null;
+
+        function log(msg) {
+            const console = document.getElementById('console');
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            line.textContent = msg;
+            console.appendChild(line);
+            console.scrollTop = console.scrollHeight;
+        }
+
+        // --- PALETTE HANDLERS ---
+        const paletteItems = document.querySelectorAll('.palette-item');
+        paletteItems.forEach((item, idx) => {
+            item.addEventListener('dragstart', (e) => {
+                const blockData = item.getAttribute('data-block');
+                log(`[dragstart #${idx}] data: ${blockData}`);
+                
+                e.dataTransfer.effectAllowed = 'copy';
+                e.dataTransfer.setData('x-palette-block', blockData);
+                
+                // Window fallback
+                window.__draggedBlockData = blockData;
+                window.__draggedBlockType = 'palette';
+                log(`[dragstart] stored in window`);
+                
+                item.classList.add('dragging');
+            });
+
+            item.addEventListener('dragend', (e) => {
+                log(`[dragend #${idx}]`);
+                item.classList.remove('dragging');
+                delete window.__draggedBlockData;
+                delete window.__draggedBlockType;
+            });
+        });
+
+        // --- CONSTRUCTOR HANDLERS ---
+        const constructor = document.getElementById('constructor');
+
+        constructor.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+            log(`[dragover constructor]`);
+        });
+
+        constructor.addEventListener('drop', (e) => {
+            e.preventDefault();
+            log(`[drop constructor] eventTypes: ${Array.from(e.dataTransfer.types).join(', ')}`);
+            
+            const paletteData = e.dataTransfer.getData('x-palette-block');
+            log(`[drop constructor] x-palette-block: "${paletteData}"`);
+            
+            if (paletteData) {
+                try {
+                    const block = JSON.parse(paletteData);
+                    const blockDiv = document.createElement('div');
+                    blockDiv.className = 'block';
+                    blockDiv.draggable = true;
+                    blockDiv.setAttribute('data-block', paletteData);
+                    blockDiv.innerHTML = `&lt;${block.tag}&gt;`;
+                    
+                    // Add drop hint
+                    const hint = document.createElement('div');
+                    hint.className = 'block-drop-hint';
+                    hint.textContent = 'Drop items here';
+                    blockDiv.appendChild(hint);
+                    
+                    constructor.appendChild(blockDiv);
+                    log(`[drop constructor] Added new block: <${block.tag}>`);
+                    
+                    setupBlockHandlers(blockDiv);
+                } catch (err) {
+                    log(`[drop constructor] Error: ${err.message}`);
+                }
+            }
+        });
+
+        // --- BLOCK HANDLERS ---
+        function setupBlockHandlers(blockDiv) {
+            const hint = blockDiv.querySelector('.block-drop-hint');
+            
+            blockDiv.addEventListener('dragstart', (e) => {
+                log(`[dragstart block]`);
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('x-existing-block', blockDiv.getAttribute('data-block'));
+            });
+
+            if (hint) {
+                hint.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.dataTransfer.dropEffect = 'copy';
+                    log(`[dragover hint]`);
+                    hint.classList.add('drag-over');
+                });
+
+                hint.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    log(`[dragleave hint]`);
+                    hint.classList.remove('drag-over');
+                });
+
+                hint.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    log(`[drop hint] eventTypes: ${Array.from(e.dataTransfer.types).join(', ')}`);
+                    
+                    const paletteData = e.dataTransfer.getData('x-palette-block');
+                    const existingBlock = e.dataTransfer.getData('x-existing-block');
+                    
+                    log(`[drop hint] x-palette-block: "${paletteData}"`);
+                    log(`[drop hint] x-existing-block: "${existingBlock}"`);
+                    
+                    let dataToUse = paletteData || existingBlock;
+                    
+                    // Window fallback
+                    if (!dataToUse && window.__draggedBlockType === 'palette') {
+                        dataToUse = window.__draggedBlockData;
+                        log(`[drop hint] Using window fallback`);
+                    }
+                    
+                    if (dataToUse) {
+                        try {
+                            const block = JSON.parse(dataToUse);
+                            const newBlockDiv = document.createElement('div');
+                            newBlockDiv.className = 'block';
+                            newBlockDiv.draggable = true;
+                            newBlockDiv.setAttribute('data-block', dataToUse);
+                            newBlockDiv.innerHTML = `&lt;${block.tag}&gt;`;
+                            
+                            const newHint = document.createElement('div');
+                            newHint.className = 'block-drop-hint';
+                            newHint.textContent = 'Drop items here';
+                            newBlockDiv.appendChild(newHint);
+                            
+                            blockDiv.insertBefore(newBlockDiv, hint);
+                            log(`[drop hint] Added nested block: <${block.tag}>`);
+                            
+                            setupBlockHandlers(newBlockDiv);
+                        } catch (err) {
+                            log(`[drop hint] Error: ${err.message}`);
+                        }
+                    }
+                    
+                    hint.classList.remove('drag-over');
+                });
+            }
+        }
+
+        log('Test page loaded. Try dragging blocks!');
+    </script>
+</body>
+</html>

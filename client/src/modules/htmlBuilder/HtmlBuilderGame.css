@@ -1,0 +1,128 @@
+.html-builder-container {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: white;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+/* Top section: Browser (left) | Preview (right) */
+.html-builder-top-section {
+  flex: 0 0 auto;
+  min-height: 300px;
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  overflow: hidden;
+  border-bottom: 2px solid #e5e7eb;
+  background: #fafafa;
+}
+
+/* Bottom section: Palette (left) | Constructor (right) */
+.html-builder-bottom-section {
+  flex: 0 0 auto;
+  min-height: 600px;
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  overflow: visible;
+}
+
+/* Browser section in top row */
+.html-builder-browser-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 0;
+}
+
+/* Palette section in bottom row (left) */
+.html-builder-palette-section {
+  flex: 0 0 250px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 0;
+}
+
+/* Constructor section in bottom row (right) */
+.html-builder-constructor-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+  background: white;
+  min-height: 0;
+}
+
+/* Preview section in top row (right) */
+.html-builder-preview-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 0;
+}
+
+.html-builder-submit {
+  width: 100%;
+  padding: 12px 20px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.html-builder-submit:hover:not(:disabled) {
+  background: #059669;
+}
+
+.html-builder-submit:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (max-width: 1400px) {
+  .html-builder-palette-section {
+    flex: 0 0 200px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .html-builder-top-section {
+    flex-direction: column;
+    flex: 0 0 50%;
+  }
+
+  .html-builder-bottom-section {
+    flex-direction: column;
+  }
+
+  .html-builder-palette-section {
+    flex: 0 0 150px;
+  }
+}

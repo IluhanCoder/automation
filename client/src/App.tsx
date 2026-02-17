@@ -6,6 +6,7 @@ import { AuthPage } from './pages/AuthPage'
 import { ModulesPage } from './pages/ModulesPage'
 import { GamePage } from './pages/GamePage'
 import { LeaderboardPage } from './pages/LeaderboardPage'
+import { HtmlBuilderGame } from './modules/htmlBuilder/HtmlBuilderGame'
 import type { Student } from './framework/types'
 
 function AppRoutes() {
@@ -106,6 +107,25 @@ function AppRoutes() {
             ) : (
               <Navigate to="/auth" replace />
             )
+          }
+        />
+        <Route
+          path="/test-builder"
+          element={
+            <div style={{ padding: '20px', height: '100vh', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <h1 style={{ margin: 0, fontSize: '24px', flexShrink: 0 }}>HTML Builder Test</h1>
+              <div style={{ flex: 1, minHeight: 0, display: 'flex' }}>
+                <HtmlBuilderGame 
+                  question={{
+                    levelId: 1,
+                    title: "Створи контейнер",
+                    description: "Створи червоний контейнер div",
+                    targetHtml: '<div class="red">Це червоний контейнер</div>',
+                    rules: ["Використай div з класом red"]
+                  }}
+                />
+              </div>
+            </div>
           }
         />
         <Route path="/" element={<Navigate to="/modules" replace />} />
