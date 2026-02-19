@@ -1,6 +1,7 @@
 import type { ModuleState, ModuleSummary, Student, GameMessages } from './types'
 
-const API_URL = 'http://localhost:4000'
+const API_URL = (import.meta.env.VITE_API_URL as string | undefined)?.trim() || 'http://localhost:4000'
+const NORMALIZED_API_URL = API_URL.replace(/\/$/, '')
 
 const parseResponse = async <T>(response: Response): Promise<T> => {
   const payload = await response.json()
@@ -17,7 +18,7 @@ export const api = {
     classLevel: number
     password: string
   }) => {
-    const response = await fetch(`${API_URL}/api/register`, {
+    const response = await fetch(`${NORMALIZED_API_URL}/api/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -25,7 +26,7 @@ export const api = {
     return parseResponse<{ student: Student; message: string }>(response)
   },
   login: async (data: { identifier: string; password: string }) => {
-    const response = await fetch(`${API_URL}/api/login`, {
+    const response = await fetch(`${NORMALIZED_API_URL}/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -33,11 +34,11 @@ export const api = {
     return parseResponse<{ student: Student; message: string }>(response)
   },
   listModules: async () => {
-    const response = await fetch(`${API_URL}/api/modules`)
+    const response = await fetch(`${NORMALIZED_API_URL}/api/modules`)
     return parseResponse<{ modules: ModuleSummary[] }>(response)
   },
   startModule: async (moduleId: string, studentId: string) => {
-    const response = await fetch(`${API_URL}/api/modules/${moduleId}/start`, {
+    const response = await fetch(`${NORMALIZED_API_URL}/api/modules/${moduleId}/start`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ studentId }),
@@ -50,7 +51,7 @@ export const api = {
     levelId: string
     answerIndex: number
   }) => {
-    const response = await fetch(`${API_URL}/api/modules/${params.moduleId}/answer`, {
+    const response = await fetch(`${NORMALIZED_API_URL}/api/modules/${params.moduleId}/answer`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -74,7 +75,7 @@ export const api = {
     studentId: string
     levelId: string
   }) => {
-    const response = await fetch(`${API_URL}/api/modules/${params.moduleId}/view-level`, {
+    const response = await fetch(`${NORMALIZED_API_URL}/api/modules/${params.moduleId}/view-level`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -92,7 +93,7 @@ export const api = {
     }>(response)
   },
   getLeaderboard: async (classLevel: number) => {
-    const response = await fetch(`${API_URL}/api/leaderboard/${classLevel}`)
+    const response = await fetch(`${NORMALIZED_API_URL}/api/leaderboard/${classLevel}`)
     return parseResponse<{
       leaderboard: Array<{
         rank: number
@@ -110,7 +111,7 @@ export const api = {
     levelId: string
     html: string
   }) => {
-    const response = await fetch(`${API_URL}/api/modules/${params.moduleId}/answer`, {
+    const response = await fetch(`${NORMALIZED_API_URL}/api/modules/${params.moduleId}/answer`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
