@@ -402,7 +402,7 @@ export const HtmlBuilderField: React.FC<HtmlBuilderFieldProps> = ({
         className={`rounded transition ${
           hoverZone === slotKey(slotIndex) 
             ? "h-8 bg-emerald-300 border-2 border-emerald-400" 
-            : "h-px bg-transparent border-0"
+            : "h-3 bg-transparent border-0"
         }`}
         data-slot-index={slotIndex}
         onDragOver={(e) => {
@@ -494,7 +494,7 @@ export const HtmlBuilderField: React.FC<HtmlBuilderFieldProps> = ({
       className={`rounded transition-all ${
         hoverZone === `root:${position}` 
           ? "h-10 bg-emerald-300 border-2 border-emerald-400" 
-          : "h-px bg-transparent border-0"
+          : "h-3 bg-transparent border-0"
       }`}
       data-drop-zone={`root:${position}`}
       onDragOver={(e) => {
