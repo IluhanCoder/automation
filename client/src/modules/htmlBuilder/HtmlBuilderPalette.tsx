@@ -16,11 +16,15 @@ const AVAILABLE_BLOCKS = [
 interface HtmlBuilderPaletteProps {
   usedBlockTypes: Set<string>;
   showGreenBlock?: boolean;
+  showH1Block?: boolean;
+  showPBlock?: boolean;
 }
 
 export const HtmlBuilderPalette: React.FC<HtmlBuilderPaletteProps> = ({
   usedBlockTypes,
   showGreenBlock = true,
+  showH1Block = true,
+  showPBlock = true,
 }) => {
   const isOuterBlock = (tag: string) => tag === "html" || tag === "head" || tag === "body";
 
@@ -35,6 +39,12 @@ export const HtmlBuilderPalette: React.FC<HtmlBuilderPaletteProps> = ({
   // Filter available blocks - only show blocks that haven't been used yet
   const availableBlocks = AVAILABLE_BLOCKS.filter(block => {
     if (block.class === "green" && !showGreenBlock) {
+      return false;
+    }
+    if (block.tag === "h1" && !showH1Block) {
+      return false;
+    }
+    if (block.tag === "p" && !showPBlock) {
       return false;
     }
     const key = `${block.tag}${block.class ? `-${block.class}` : ''}`;

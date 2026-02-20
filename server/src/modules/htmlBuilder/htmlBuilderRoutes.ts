@@ -127,6 +127,10 @@ htmlBuilderRouter.post("/api/modules/html-builder/start", async (req, res) => {
       levels: HTML_BUILDER_LEVELS.map(l => ({ id: String(l.id), points: 1 })),
       progress: []
     });
+  } else {
+    // Update levels if they changed
+    game.levels = HTML_BUILDER_LEVELS.map(l => ({ id: String(l.id), points: 1 }));
+    await game.save();
   }
 
   // Find or create progress for student

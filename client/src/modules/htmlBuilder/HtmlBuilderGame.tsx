@@ -96,6 +96,8 @@ export const HtmlBuilderGame: React.FC<HtmlBuilderGameProps> = ({
   };
 
   const showGreenBlock = question?.targetHtml.includes('class="green"') ?? false;
+  const showH1Block = question?.targetHtml.includes('<h1>') ?? false;
+  const showPBlock = question?.targetHtml.includes('<p>') ?? false;
 
   return (
     <div className="html-builder-container">
@@ -115,6 +117,8 @@ export const HtmlBuilderGame: React.FC<HtmlBuilderGameProps> = ({
           <HtmlBuilderPalette 
             usedBlockTypes={getUsedBlockTypes()}
             showGreenBlock={showGreenBlock}
+            showH1Block={showH1Block}
+            showPBlock={showPBlock}
           />
         </div>
 
