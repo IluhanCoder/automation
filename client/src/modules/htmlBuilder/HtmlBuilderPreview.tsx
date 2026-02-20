@@ -20,13 +20,17 @@ export const HtmlBuilderPreview: React.FC<HtmlBuilderPreviewProps> = ({
     const defaultText =
       block.tag === "title"
         ? "мій сайт"
-        : block.tag === "div" && block.class === "red"
-        ? "Червоний блок"
-        : block.tag === "div" && block.class === "blue"
-          ? "Синій блок"
-          : block.tag === "div" && block.class === "green"
-            ? "Зелений блок"
-          : "";
+        : block.tag === "h1"
+        ? "всесвітня історія"
+        : block.tag === "p"
+          ? "просто абзац з текстом"
+          : block.tag === "div" && block.class === "red"
+          ? "Червоний блок"
+          : block.tag === "div" && block.class === "blue"
+            ? "Синій блок"
+            : block.tag === "div" && block.class === "green"
+              ? "Зелений блок"
+            : "";
 
     const textContent = block.text ?? defaultText;
     const childrenContent = block.children.map(renderBlock);

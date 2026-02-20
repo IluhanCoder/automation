@@ -19,6 +19,8 @@ const BLOCK_TEMPLATES: Record<string, { tag: string; class?: string; text?: stri
   "block-div-red": { tag: "div", class: "red" },
   "block-div-blue": { tag: "div", class: "blue" },
   "block-div-green": { tag: "div", class: "green" },
+  "block-h1": { tag: "h1", text: "всесвітня історія" },
+  "block-p": { tag: "p", text: "просто абзац з текстом" },
 };
 
 type DragPayload =
@@ -395,7 +397,7 @@ export const HtmlBuilderField: React.FC<HtmlBuilderFieldProps> = ({
       block.tag === "br" ||
       block.tag === "hr" ||
       block.tag === "input";
-    const canHaveChildren = !inlineClosing && block.tag !== "title";
+    const canHaveChildren = !inlineClosing && block.tag !== "title" && block.tag !== "h1" && block.tag !== "p";
 
     const renderInsideSlot = (slotIndex: number) => (
       <div

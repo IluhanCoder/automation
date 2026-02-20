@@ -92,5 +92,70 @@ export const HTML_BUILDER_LEVELS: HtmlBuilderLevel[] = [
       "Червоний і синій блоки мають бути всередині зеленого",
       "Порядок усередині зеленого блоку: red, потім blue"
     ]
+  },
+  {
+    id: 7,
+    title: "Заголовок та абзац",
+    description: "Додай заголовок h1 і абзац p у body",
+    requiredTags: ["html", "head", "body", "title", "h1", "p"],
+    targetHtml: '<html><head><title>мій сайт</title></head><body><h1>всесвітня історія</h1><p>просто абзац з текстом</p></body></html>',
+    rules: [
+      "<html> має бути кореневим елементом",
+      "<head> має містити <title>",
+      "<body> має містити <h1> і <p>",
+      "Порядок у <body>: h1, потім p"
+    ]
+  },
+  {
+    id: 8,
+    title: "Абзац і заголовок",
+    description: "Змінюй порядок: спочатку абзац, потім заголовок",
+    requiredTags: ["html", "head", "body", "title", "h1", "p"],
+    targetHtml: '<html><head><title>мій сайт</title></head><body><p>просто абзац з текстом</p><h1>всесвітня історія</h1></body></html>',
+    rules: [
+      "<html> має бути кореневим елементом",
+      "<head> має містити <title>",
+      "<body> має містити <p> і <h1>",
+      "Порядок у <body>: p, потім h1"
+    ]
+  },
+  {
+    id: 9,
+    title: "Заголовок у червоному блоці",
+    description: "Помісти h1 всередину червоного контейнера",
+    requiredTags: ["html", "head", "body", "title", "div", "h1"],
+    targetHtml: '<html><head><title>мій сайт</title></head><body><div class="red">Червоний блок<h1>всесвітня історія</h1></div></body></html>',
+    rules: [
+      "<html> має бути кореневим елементом",
+      "<head> має містити <title>",
+      "<body> має містити червоний <div>",
+      "<h1> має бути всередині червоного блоку"
+    ]
+  },
+  {
+    id: 10,
+    title: "Абзац у синьому блоці",
+    description: "Розмісти p всередині синього контейнера",
+    requiredTags: ["html", "head", "body", "title", "div", "p"],
+    targetHtml: '<html><head><title>мій сайт</title></head><body><div class="blue">Синій блок<p>просто абзац з текстом</p></div></body></html>',
+    rules: [
+      "<html> має бути кореневим елементом",
+      "<head> має містити <title>",
+      "<body> має містити синій <div>",
+      "<p> має бути всередині синього блоку"
+    ]
+  },
+  {
+    id: 11,
+    title: "Текстова структура",
+    description: "Створи зелений блок із h1 і p всередині",
+    requiredTags: ["html", "head", "body", "title", "div", "h1", "p"],
+    targetHtml: '<html><head><title>мій сайт</title></head><body><div class="green">Зелений блок<h1>всесвітня історія</h1><p>просто абзац з текстом</p></div></body></html>',
+    rules: [
+      "<html> має бути кореневим елементом",
+      "<head> має містити <title>",
+      "<body> має містити зелений <div>",
+      "Всередині зеленого блоку: h1, потім p"
+    ]
   }
 ];

@@ -9,6 +9,8 @@ const AVAILABLE_BLOCKS = [
   { id: "block-div-red", tag: "div", class: "red" },
   { id: "block-div-blue", tag: "div", class: "blue" },
   { id: "block-div-green", tag: "div", class: "green" },
+  { id: "block-h1", tag: "h1", text: "всесвітня історія" },
+  { id: "block-p", tag: "p", text: "просто абзац з текстом" },
 ];
 
 interface HtmlBuilderPaletteProps {
@@ -72,6 +74,14 @@ export const HtmlBuilderPalette: React.FC<HtmlBuilderPaletteProps> = ({
                 {block.tag === "title" ? (
                   <span className="text-sm font-semibold" style={{ color: getTagColor(block.tag, block.class) }}>
                     {"<title>мій сайт</title>"}
+                  </span>
+                ) : block.tag === "h1" ? (
+                  <span className="text-sm font-semibold" style={{ color: getTagColor(block.tag, block.class) }}>
+                    {"<h1>всесвітня історія</h1>"}
+                  </span>
+                ) : block.tag === "p" ? (
+                  <span className="text-sm font-semibold" style={{ color: getTagColor(block.tag, block.class) }}>
+                    {"<p>просто абзац з текстом</p>"}
                   </span>
                 ) : (
                   <>
